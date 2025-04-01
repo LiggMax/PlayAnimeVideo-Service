@@ -17,12 +17,14 @@ public class AnimeController {
     private AnimeService animeService;
 
 
+    //搜索
     @GetMapping("/Search")
     public Result<Map<String, Object>> getSearchList(String keyword) {
         Map<String, Object> stringObjectMap = animeService.searchAnime(keyword);
         return Result.success(200, stringObjectMap);
     }
 
+    //播放视频
     @GetMapping("/PlayVideo")
     public Result<String> getPlayVideo(String url) {
         String playVideoUrl = animeService.getPlayVideoUrl(url);

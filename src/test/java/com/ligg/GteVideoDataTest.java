@@ -42,7 +42,7 @@ public class GteVideoDataTest {
                     long startTime = System.currentTimeMillis();
                     try {
                         Document document = Jsoup.connect("\n" +
-                                        "https://hydownload.pan.wo.cn/openapi/download?fid=n90iF_sXajSrzvS0bkugOe8TuBQwbLga5BvXUM%2B6VERwH7c5VvAplNHK5XhAYxI17nBs2Ff42u5qpYCFWHfiEspVsz9Q==")
+                                        "https://dm1.xfdm.pro/search.html?wd=" + KEYWORD)
                                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
                                 .timeout(5000)
                                 .get();
