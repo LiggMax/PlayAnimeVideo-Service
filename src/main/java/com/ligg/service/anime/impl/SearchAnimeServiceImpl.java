@@ -42,7 +42,7 @@ public class SearchAnimeServiceImpl implements SearchAnimeService {
 
     // HTTP请求参数
     private static final int MAX_RETRIES = 3;               // 最大重试次数
-    private static final int CONNECTION_TIMEOUT = 100000;   // 连接超时时间(毫秒)
+    private static final int CONNECTION_TIMEOUT = 600000;   // 连接超时时间(毫秒)
     private static final int READ_TIMEOUT = 300000;         // 读取超时时间(毫秒)
 
     @Override
