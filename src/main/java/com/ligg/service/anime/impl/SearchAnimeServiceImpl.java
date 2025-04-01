@@ -6,8 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,15 +16,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class SearchAnimeServiceImpl implements SearchAnimeService {
 
+    /**
+     * 稀饭动漫
+     */
+    //从配置文件中获取的URL
+    @Value("${XFDM.URL}")
+    public String XFDM_URL;
+    @Value("${XFDM.SEARCH_URL}")
+    public String XF_SEARCH_URL;
 
-    private static final String XFDM_URL = "https://cycani.org";
-    private static final String SEARCH_URL = "https://cycani.org/search.html?wd=";
+//    private static final String XFDM_URL = "https://dm1.xfdm.pro";
+//    private static final String XF_SEARCH_URL = "https://dm1.xfdm.pro/search.html?wd=";
+
+    /**
+     * 次元城动漫
+     */
+//    private static final String CYC_URL = "https://cycani.org";
+//    private static final String CYC_SEARCH_URL = "https://cycani.org/search.html?wd=";
+
 
     // HTTP请求参数
     private static final int MAX_RETRIES = 3;               // 最大重试次数
@@ -90,7 +103,7 @@ public class SearchAnimeServiceImpl implements SearchAnimeService {
         for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 log.debug("尝试第{}次请求搜索页面", attempt);
-                searchPage = Jsoup.connect(SEARCH_URL + keyword)
+                searchPage = Jsoup.connect(XF_SEARCH_URL + keyword)
                         .timeout(CONNECTION_TIMEOUT)
                         .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
                         .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")

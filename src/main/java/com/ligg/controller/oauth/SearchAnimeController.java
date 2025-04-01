@@ -15,11 +15,7 @@ import java.util.Map;
 public class SearchAnimeController {
 
     @Autowired
-    private SearchAnimeService searchAnimeService;
+    private SearchAnimeService animeService;
 
-    @GetMapping
-    public Result <List<Map<String, Object>>> getSearchList(String keyword) {
-        List<Map<String, Object>> stringObjectMap = searchAnimeService.searchAnimeList(keyword);
-        return Result.success(200,stringObjectMap);
-    }
+
 }

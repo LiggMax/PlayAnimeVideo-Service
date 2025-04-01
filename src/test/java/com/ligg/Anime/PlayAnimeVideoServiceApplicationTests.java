@@ -1,4 +1,4 @@
-package com.ligg;
+package com.ligg.Anime;
 
 import com.ligg.service.anime.SearchAnimeService;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import java.util.Map;
 class PlayAnimeVideoServiceApplicationTests {
 
     @Autowired
-    private SearchAnimeService searchAnimeService;
+    private SearchAnimeService animeService;
 
     @Test
     void contextLoads() {
@@ -22,7 +22,7 @@ class PlayAnimeVideoServiceApplicationTests {
     void testSearchAnimeService() {
         // 测试搜索动漫列表
         String keyword = "我独自升级";
-        List<Map<String, Object>> results = searchAnimeService.searchAnimeList(keyword);
+        List<Map<String, Object>> results = animeService.searchAnimeList(keyword);
         
         System.out.println("=== 搜索结果 ===");
         System.out.println("关键词: " + keyword);
@@ -50,7 +50,7 @@ class PlayAnimeVideoServiceApplicationTests {
         // 测试带分页的搜索
         int page = 1;
         int size = 1;
-        List<Map<String, Object>> pagedResults = searchAnimeService.searchAnimeList(keyword, page, size);
+        List<Map<String, Object>> pagedResults = animeService.searchAnimeList(keyword, page, size);
         
         System.out.println("\n=== 分页搜索结果 ===");
         System.out.println("页码: " + page + ", 每页大小: " + size);

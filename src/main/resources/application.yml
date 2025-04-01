@@ -1,2 +1,7 @@
 server:
   port: 9988
+
+
+XFDM:
+  URL: https://dm1.xfdm.pro
+  SEARCH_URL: https://dm1.xfdm.pro/search.html?wd=

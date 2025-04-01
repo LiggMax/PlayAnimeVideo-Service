@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 动漫搜索服务接口
+ * 动漫服务接口
  */
 public interface SearchAnimeService {
 
@@ -14,7 +14,7 @@ public interface SearchAnimeService {
      * @return 搜索结果列表，每个元素包含动漫的详细信息
      */
     List<Map<String, Object>> searchAnimeList(String keyword);
-    
+
     /**
      * 搜索动漫列表（带分页）
      * @param keyword 搜索关键词
