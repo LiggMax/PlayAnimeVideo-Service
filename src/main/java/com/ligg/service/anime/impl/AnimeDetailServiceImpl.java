@@ -101,7 +101,7 @@ public class AnimeDetailServiceImpl implements AnimeDetailService {
             String year = "";
             String area = "";
             
-            if (infoRemarks.size() >= 1) {
+            if (!infoRemarks.isEmpty()) {
                 Element yearElement = infoRemarks.get(0);
                 year = yearElement.text().trim();
             }

@@ -11,6 +11,13 @@ import java.util.Map;
 
 public interface BangumiService {
 
-
+    /**
+     * bangumi 搜索
+     */
     Map<String,Object> getBangumiSearchList(String keywords);
+
+    /**
+     * bangumi 详情
+     */
+    Map<String,Object> getBangumiDetail(Integer id);
 }

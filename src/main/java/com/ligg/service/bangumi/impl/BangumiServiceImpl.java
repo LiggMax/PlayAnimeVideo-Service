@@ -18,25 +18,67 @@ import java.util.Map;
 public class BangumiServiceImpl implements BangumiService {
 
     private static final String BANGUMI_URL = "https://api.bgm.tv";
-
-    private static final String BANGUMI_SEARCH_URL = "https://api.bgm.tv";
-    @Autowired
-    private WebClient webClient;
+    private static final String SEARCH_URL = "/search/subject/";
+    private static final String DETAIL_URL = "/v0/subjects/";
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private RestTemplate restTemplate;
+
 
     @Override
     public Map getBangumiSearchList(String keywords) {
         // 构建带查询参数的URL
-        String searchUrl = BANGUMI_SEARCH_URL + "/search/subject/" + keywords + "?type=2&responseGroup=medium";
+        String searchUrl = BANGUMI_URL + SEARCH_URL + keywords + "?type=2&responseGroup=medium";
 
-        RestTemplate restTemplate = new RestTemplate();
         try {
-            ResponseEntity<Map> response = restTemplate.getForEntity(searchUrl, Map.class);
+            // 创建请求头
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("User-Agent", "PlayAnimeVideo/1.0 (ligg@example.com)");
+            
+            // 创建HttpEntity，包含请求头
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            // 使用exchange方法发送带请求头的请求
+            ResponseEntity<Map> response = restTemplate.exchange(
+                searchUrl, 
+                HttpMethod.GET, 
+                entity, 
+                Map.class
+            );
+            
             return response.getBody();
         } catch (Exception e) {
+            log.error("请求链接 {} ", searchUrl);
             log.error("番剧搜索失败", e);
+        }
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getBangumiDetail(Integer id) {
+        // 构建带查询参数的URL
+        String animeUrl = BANGUMI_URL + DETAIL_URL + id;
+
+        try {
+            // 创建请求头
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("User-Agent", "PlayAnimeVideo/1.0 (ligg@example.com)");
+            
+            // 创建HttpEntity，包含请求头
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            
+            // 使用exchange方法发送带请求头的请求
+            ResponseEntity<Map> response = restTemplate.exchange(
+                animeUrl, 
+                HttpMethod.GET, 
+                entity, 
+                Map.class
+            );
+            
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("请求链接 {} ", animeUrl);
+            log.error("番剧详情获取失败", e);
         }
         return null;
     }
