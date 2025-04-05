@@ -22,102 +22,102 @@ public class GteVideoDataTest {
 
     private static final String BASE_URL = "https://dm1.xfdm.pro/search.html?wd=";
 
-    @Test
-    public void DDOS() throws InterruptedException {
-        int requestsPerSecond = 100000; // 每秒请求数
-        int durationSeconds = 30; // 持续时间（秒）
-        ExecutorService executorService = Executors.newFixedThreadPool(50); // 创建线程池
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1); // 创建调度器
-        AtomicInteger successCount = new AtomicInteger(0); // 成功计数
-        AtomicInteger failureCount = new AtomicInteger(0); // 失败计数
-        AtomicInteger validResponseCount = new AtomicInteger(0); // 有效响应计数
-        AtomicLong totalResponseTime = new AtomicLong(0); // 总响应时间
-
-        System.out.println("开始发送请求，每秒" + requestsPerSecond + "个请求，持续" + durationSeconds + "秒");
-
-        // 创建定时任务，每秒执行一次
-        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
-            for (int i = 0; i < requestsPerSecond; i++) {
-                CompletableFuture.runAsync(() -> {
-                    long startTime = System.currentTimeMillis();
-                    try {
-                        Document document = Jsoup.connect("\n" +
-                                        "https://dm1.xfdm.pro/search.html?wd=" + KEYWORD)
-                                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-                                .timeout(5000)
-                                .get();
-                        
-                        long responseTime = System.currentTimeMillis() - startTime;
-                        totalResponseTime.addAndGet(responseTime);
-                        
-                        // 检查响应内容
-                        String title = document.title();
-                        String content = document.body().text();
-                        
-                        // 验证响应内容是否有效（这里可以根据实际需求修改验证条件）
-                        boolean isValidResponse = title != null && !title.isEmpty() && 
-                                                content != null && !content.isEmpty() &&
-                                                content.length() > 100; // 确保内容不为空且有一定长度
-                        
-                        if (isValidResponse) {
-                            validResponseCount.incrementAndGet();
-                            successCount.incrementAndGet();
-                            System.out.println("请求成功: " + Thread.currentThread().getName() + 
-                                             ", 响应时间: " + responseTime + "ms" +
-                                             ", 成功数: " + successCount.get() + 
-                                             ", 有效响应数: " + validResponseCount.get() +
-                                             ", 失败数: " + failureCount.get());
-                        } else {
-                            failureCount.incrementAndGet();
-                            System.out.println("无效响应: " + Thread.currentThread().getName() + 
-                                             ", 响应时间: " + responseTime + "ms" +
-                                             ", 成功数: " + successCount.get() + 
-                                             ", 有效响应数: " + validResponseCount.get() +
-                                             ", 失败数: " + failureCount.get());
-                        }
-                    } catch (Exception e) {
-                        long responseTime = System.currentTimeMillis() - startTime;
-                        failureCount.incrementAndGet();
-                        System.out.println("请求失败: " + Thread.currentThread().getName() + 
-                                         ", 响应时间: " + responseTime + "ms" +
-                                         ", 错误: " + e.getMessage() + 
-                                         ", 成功数: " + successCount.get() + 
-                                         ", 有效响应数: " + validResponseCount.get() +
-                                         ", 失败数: " + failureCount.get());
-                    }
-                }, executorService);
-            }
-        }, 0, 1, TimeUnit.SECONDS);
-
-        // 等待指定时间后停止
-        Thread.sleep(durationSeconds * 1000L);
-        scheduledFuture.cancel(false);
-        scheduler.shutdown();
-        executorService.shutdown();
-
-        // 等待所有任务完成
-        scheduler.awaitTermination(5, TimeUnit.SECONDS);
-        executorService.awaitTermination(5, TimeUnit.SECONDS);
-
-        // 计算统计数据
-        int totalRequests = successCount.get() + failureCount.get();
-        double avgResponseTime = totalRequests > 0 ? 
-            (double) totalResponseTime.get() / totalRequests : 0;
-        double successRate = totalRequests > 0 ? 
-            (double) successCount.get() / totalRequests * 100 : 0;
-        double validResponseRate = totalRequests > 0 ? 
-            (double) validResponseCount.get() / totalRequests * 100 : 0;
-
-        System.out.println("\n========== 测试统计 ==========");
-        System.out.println("总请求数: " + totalRequests);
-        System.out.println("成功请求数: " + successCount.get());
-        System.out.println("有效响应数: " + validResponseCount.get());
-        System.out.println("失败请求数: " + failureCount.get());
-        System.out.println("平均响应时间: " + String.format("%.2f", avgResponseTime) + "ms");
-        System.out.println("成功率: " + String.format("%.2f", successRate) + "%");
-        System.out.println("有效响应率: " + String.format("%.2f", validResponseRate) + "%");
-        System.out.println("==============================\n");
-    }
+//    @Test
+//    public void DDOS() throws InterruptedException {
+//        int requestsPerSecond = 100000; // 每秒请求数
+//        int durationSeconds = 30; // 持续时间（秒）
+//        ExecutorService executorService = Executors.newFixedThreadPool(50); // 创建线程池
+//        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1); // 创建调度器
+//        AtomicInteger successCount = new AtomicInteger(0); // 成功计数
+//        AtomicInteger failureCount = new AtomicInteger(0); // 失败计数
+//        AtomicInteger validResponseCount = new AtomicInteger(0); // 有效响应计数
+//        AtomicLong totalResponseTime = new AtomicLong(0); // 总响应时间
+//
+//        System.out.println("开始发送请求，每秒" + requestsPerSecond + "个请求，持续" + durationSeconds + "秒");
+//
+//        // 创建定时任务，每秒执行一次
+//        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
+//            for (int i = 0; i < requestsPerSecond; i++) {
+//                CompletableFuture.runAsync(() -> {
+//                    long startTime = System.currentTimeMillis();
+//                    try {
+//                        Document document = Jsoup.connect("\n" +
+//                                        "https://dm1.xfdm.pro/search.html?wd=" + KEYWORD)
+//                                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+//                                .timeout(5000)
+//                                .get();
+//
+//                        long responseTime = System.currentTimeMillis() - startTime;
+//                        totalResponseTime.addAndGet(responseTime);
+//
+//                        // 检查响应内容
+//                        String title = document.title();
+//                        String content = document.body().text();
+//
+//                        // 验证响应内容是否有效（这里可以根据实际需求修改验证条件）
+//                        boolean isValidResponse = title != null && !title.isEmpty() &&
+//                                                content != null && !content.isEmpty() &&
+//                                                content.length() > 100; // 确保内容不为空且有一定长度
+//
+//                        if (isValidResponse) {
+//                            validResponseCount.incrementAndGet();
+//                            successCount.incrementAndGet();
+//                            System.out.println("请求成功: " + Thread.currentThread().getName() +
+//                                             ", 响应时间: " + responseTime + "ms" +
+//                                             ", 成功数: " + successCount.get() +
+//                                             ", 有效响应数: " + validResponseCount.get() +
+//                                             ", 失败数: " + failureCount.get());
+//                        } else {
+//                            failureCount.incrementAndGet();
+//                            System.out.println("无效响应: " + Thread.currentThread().getName() +
+//                                             ", 响应时间: " + responseTime + "ms" +
+//                                             ", 成功数: " + successCount.get() +
+//                                             ", 有效响应数: " + validResponseCount.get() +
+//                                             ", 失败数: " + failureCount.get());
+//                        }
+//                    } catch (Exception e) {
+//                        long responseTime = System.currentTimeMillis() - startTime;
+//                        failureCount.incrementAndGet();
+//                        System.out.println("请求失败: " + Thread.currentThread().getName() +
+//                                         ", 响应时间: " + responseTime + "ms" +
+//                                         ", 错误: " + e.getMessage() +
+//                                         ", 成功数: " + successCount.get() +
+//                                         ", 有效响应数: " + validResponseCount.get() +
+//                                         ", 失败数: " + failureCount.get());
+//                    }
+//                }, executorService);
+//            }
+//        }, 0, 1, TimeUnit.SECONDS);
+//
+//        // 等待指定时间后停止
+//        Thread.sleep(durationSeconds * 1000L);
+//        scheduledFuture.cancel(false);
+//        scheduler.shutdown();
+//        executorService.shutdown();
+//
+//        // 等待所有任务完成
+//        scheduler.awaitTermination(5, TimeUnit.SECONDS);
+//        executorService.awaitTermination(5, TimeUnit.SECONDS);
+//
+//        // 计算统计数据
+//        int totalRequests = successCount.get() + failureCount.get();
+//        double avgResponseTime = totalRequests > 0 ?
+//            (double) totalResponseTime.get() / totalRequests : 0;
+//        double successRate = totalRequests > 0 ?
+//            (double) successCount.get() / totalRequests * 100 : 0;
+//        double validResponseRate = totalRequests > 0 ?
+//            (double) validResponseCount.get() / totalRequests * 100 : 0;
+//
+//        System.out.println("\n========== 测试统计 ==========");
+//        System.out.println("总请求数: " + totalRequests);
+//        System.out.println("成功请求数: " + successCount.get());
+//        System.out.println("有效响应数: " + validResponseCount.get());
+//        System.out.println("失败请求数: " + failureCount.get());
+//        System.out.println("平均响应时间: " + String.format("%.2f", avgResponseTime) + "ms");
+//        System.out.println("成功率: " + String.format("%.2f", successRate) + "%");
+//        System.out.println("有效响应率: " + String.format("%.2f", validResponseRate) + "%");
+//        System.out.println("==============================\n");
+//    }
 
     @Test
     public void searchVideoTest() {

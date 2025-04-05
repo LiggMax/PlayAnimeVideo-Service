@@ -1,4 +1,4 @@
-package com.ligg.controller.oauth;
+package com.ligg.controller.anime;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

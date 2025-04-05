@@ -1,4 +1,4 @@
-package com.ligg.controller.oauth;
+package com.ligg.controller.anime;
 
 import com.ligg.service.anime.AnimeDetailService;
 import com.ligg.service.anime.SearchAnimeService;
