@@ -26,7 +26,6 @@ public class VideoUrlParserImpl implements VideoUrlParserService {
      *
      * @param videoPageUrl 视频页面URL
      * @return 解析到的视频链接列表
-     * @throws Exception 解析过程中发生的异常
      */
     @Override
     public List<String> parseVideoUrls(String videoPageUrl){
@@ -50,7 +49,6 @@ public class VideoUrlParserImpl implements VideoUrlParserService {
                             .header("Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7")
                             .followRedirects(true)
                             .get();
-
                     // 成功获取页面，跳出重试循环
                     lastException = null;
                     break;
