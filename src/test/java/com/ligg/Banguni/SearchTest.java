@@ -39,11 +39,25 @@ public class SearchTest {
         System.out.println(result);
     }
 
+    /**
+     * 测试角色功能
+     */
     @Test
     public void testCharacter() {
         // 测试使用不同的关键词
         Integer id = 464376;
         List<Map<String, Object>> result = bangumiService.getBangumiCharacter(id);
+        System.out.println(result);
+    }
+
+    /**
+     * 测试集数功能
+     */
+    @Test
+    public void testEpisode() {
+        // 测试使用不同的关键词
+        Integer id = 464376;
+        Map<String, Object> result = bangumiService.getBangumiEpisode(id);
         System.out.println(result);
     }
 }

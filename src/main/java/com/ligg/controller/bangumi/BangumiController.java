@@ -48,4 +48,16 @@ public class BangumiController {
         }
         return Result.success(200,bangumiCharacter);
     }
+
+    /**
+     * 番剧剧集
+     */
+    @GetMapping("/episode")
+    public Result<Map<String,Object>> getBangumiEpisode(Integer id){
+        Map<String,Object> bangumiEpisode = bangumiService.getBangumiEpisode(id);
+        if (bangumiEpisode == null){
+            return Result.error(400,"内容不存在");
+        }
+        return Result.success(200,bangumiEpisode);
+    }
 }

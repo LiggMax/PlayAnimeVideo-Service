@@ -25,4 +25,9 @@ public interface BangumiService {
      * 角色信息
      */
    List< Map<String,Object>> getBangumiCharacter(Integer id);
+
+    /**
+     * 剧集信息
+     */
+    Map<String,Object> getBangumiEpisode(Integer id);
 }

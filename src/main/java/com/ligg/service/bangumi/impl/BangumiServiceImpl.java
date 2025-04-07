@@ -19,6 +19,7 @@ public class BangumiServiceImpl implements BangumiService {
     private static final String SEARCH_URL = "/search/subject/";
     private static final String DETAIL_URL = "/v0/subjects/";
     private static final String CHARACTER_URL = "/v0/subjects/{subject_id}/characters";
+    private static final String EPISODE_URL = "/v0/episodes?subject_id={subject_id}";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -33,18 +34,18 @@ public class BangumiServiceImpl implements BangumiService {
             // 创建请求头
             HttpHeaders headers = new HttpHeaders();
             headers.set("User-Agent", "PlayAnimeVideo/1.0 (ligg@example.com)");
-            
+
             // 创建HttpEntity，包含请求头
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
             // 使用exchange方法发送带请求头的请求
             ResponseEntity<Map> response = restTemplate.exchange(
-                searchUrl, 
-                HttpMethod.GET, 
-                entity, 
-                Map.class
+                    searchUrl,
+                    HttpMethod.GET,
+                    entity,
+                    Map.class
             );
-            
+
             return response.getBody();
         } catch (Exception e) {
             log.error("请求链接 {} ", searchUrl);
@@ -62,18 +63,18 @@ public class BangumiServiceImpl implements BangumiService {
             // 创建请求头
             HttpHeaders headers = new HttpHeaders();
             headers.set("User-Agent", "PlayAnimeVideo/1.0 (ligg@example.com)");
-            
+
             // 创建HttpEntity，包含请求头
             HttpEntity<String> entity = new HttpEntity<>(headers);
-            
+
             // 使用exchange方法发送带请求头的请求
             ResponseEntity<Map> response = restTemplate.exchange(
-                animeUrl, 
-                HttpMethod.GET, 
-                entity, 
-                Map.class
+                    animeUrl,
+                    HttpMethod.GET,
+                    entity,
+                    Map.class
             );
-            
+
             return response.getBody();
         } catch (Exception e) {
             log.error("请求链接 {} ", animeUrl);
@@ -86,22 +87,44 @@ public class BangumiServiceImpl implements BangumiService {
      * 获取番剧角色
      */
     @Override
-    public List<Map<String,Object>> getBangumiCharacter(Integer id) {
+    public List<Map<String, Object>> getBangumiCharacter(Integer id) {
         String characterUrl = BANGUMI_URL + CHARACTER_URL.replace("{subject_id}", id.toString());
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("User-Agent", "PlayAnimeVideo/1.0 (ligg@example.com)");
 
             HttpEntity<Object> entity = new HttpEntity<>(headers);
-            ResponseEntity<List<Map<String,Object>>> response = restTemplate.exchange(
+            ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
                     characterUrl,
                     HttpMethod.GET,
                     entity,
                     new ParameterizedTypeReference<>() {
                     });
             return response.getBody();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("番剧角色获取失败", e);
+        }
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getBangumiEpisode(Integer id) {
+
+        String episodeUrl = BANGUMI_URL + EPISODE_URL.replace("{subject_id}", id.toString()) + "&" + "limit=100" + "&" + "offset=0";
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("User-Agent", "PlayAnimeVideo/1.0 (ligg@example.com)");
+
+            HttpEntity<Object> entity = new HttpEntity<>(headers);
+            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                    episodeUrl,
+                    HttpMethod.GET,
+                    entity,
+                    new ParameterizedTypeReference<>() {
+                    });
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("番剧集数获取失败", e);
         }
         return null;
     }
